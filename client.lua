@@ -187,6 +187,23 @@ RegisterCommand('ashutdown', function()
     lib.notify({ description = 'Engine shutdown.', type = 'inform' })
 end, false)
 
+---No city pilot licence for this aircraft? Returns the NO GO reason, or nil.
+---@param veh number
+---@return string|nil
+local function licenceReason(veh)
+    local L = Config.licences
+    if not L or not L.enabled then return nil end
+    local data = exports.qbx_core:GetPlayerData() or {}
+    local job = data.job
+    if job and L.exemptJobTypes[job.type] then return nil end
+    local have = data.metadata and data.metadata.licences or {}
+    local heli = GetVehicleClass(veh) == 15
+    for _, id in ipairs(heli and L.heli or L.plane) do
+        if have[id] == true then return nil end
+    end
+    return heli and 'NO HELICOPTER LICENCE' or 'NO PILOT LICENCE'
+end
+
 ---Begin the start sequence on the aircraft I am flying. Shared by /astart,
 ---the preflight thread (auto-start on entering a cold aircraft) and the
 ---export dps-airlines' copilot checklist calls.
@@ -199,7 +216,7 @@ local function startPreflight()
         SetVehicleEngineOn(veh, true, false, true)
         return true
     end
-    local why = noGoReason(veh)
+    local why = licenceReason(veh) or noGoReason(veh)
     if why then
         showText(('NO GO - %s'):format(why), Config.textStyle.nogo)
         lib.notify({ description = why:sub(1, 1) .. why:sub(2):lower(), type = 'error' })
