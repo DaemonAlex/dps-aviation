@@ -148,7 +148,7 @@ Config.timeScale = 0.6
 -- Per-model TOTAL override in real seconds (before timeScale), when a craft
 -- should be quicker or slower than its class. Names, not hashes.
 Config.spinupModel = {
-    ['2021medheli'] = 150,   -- twin-engine EMS, the full checklist (~90 s)
+    -- DPS 2026-10-25 fleet cut: 2021medheli removed
 }
 
 -- Which start sequence a model gets. Anything in class 16 not listed here is
@@ -156,15 +156,15 @@ Config.spinupModel = {
 -- hashes; add addons as they arrive.
 Config.airlinerModels = {
     'jet', 'cargoplane',                                      -- vanilla 747-class
-    '737', '737200', '737400', '737500', '737600', '737700', '737800', '737900', '737900er',
-    '7310', '738', '739', '757', '757f', '7674',              -- dpsveh-air Boeings
+    '737', '737400', '737500', '737600', '737700', '737800', '737900', '737900er',
+    '7310', '738', '757', '757f', '7674',                     -- dpsveh-air Boeings (737200, 739 cut 2026-10-25)
 }
 Config.jetModels = {
     -- vanilla
     'luxor', 'luxor2', 'shamal', 'miljet', 'nimbus', 'vestra', 'lazer', 'hydra',
     'besra', 'molotok', 'starling', 'alkonost', 'strikeforce', 'avenger',
     -- DPS regional and bizjets (dpsveh-air)
-    'e145', 'l650', 'jetstar', 'jetstar2',
+    'jetstar', 'jetstar2',                                    -- e145, l650 cut 2026-10-25
 }
 Config.turbopropModels = {
     'titan', 'bombushka', 'volatol',   -- vanilla
@@ -177,7 +177,7 @@ Config.twinHelis = {
     'maverick', 'polmav', 'swift', 'swift2', 'annihilator', 'annihilator2', 'cargobob', 'cargobob2',
     'cargobob3', 'cargobob4', 'valkyrie', 'valkyrie2', 'savage', 'skylift', 'supervolito', 'supervolito2',
     -- DPS packs
-    '2021medheli', 'ec135med', '2vd_supervolito',                 -- EMS
+    'ec135med', '2vd_supervolito',                                -- EMS (2021medheli cut 2026-10-25)
     'hvpolmav', 'roxpolmav', 'hvannihilator', 'hvannihilator2', 'hvcargobob5', -- LEO
     'hvfdannihilator', 'hvfdannihilator2', 'hvfdswift', 'cghelir',              -- fire, coast guard
     'newsheli', 'newsheli2',                                                    -- news (Maverick base)
@@ -215,3 +215,13 @@ Config.textStyle = {
 -- get the engine keep-alive and preflight; taxi assist is planes only (a heli
 -- does not taxi, and while cold its engine is simply off).
 Config.classes = { [15] = true, [16] = true }
+
+-- City pilot licences, earned in the City Services app (dps-services, Damon
+-- 2026-10-11): flying any plane needs Private Pilot (or higher), any helicopter
+-- needs the Helicopter licence. Emergency jobs fly their own aircraft without it.
+Config.licences = {
+    enabled = true,
+    plane = { 'pilot_private', 'pilot_commercial', 'pilot_atp' }, -- any one of these
+    heli = { 'heli' },
+    exemptJobTypes = { leo = true, ems = true, military = true }, -- police, EMS and fire, National Guard
+}
