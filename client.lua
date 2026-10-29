@@ -155,6 +155,8 @@ CreateThread(function()
                 SetVehicleEngineOn(veh, false, true, true)
             elseif not GetIsVehicleEngineRunning(veh)
                 and not engineDead(veh)                         -- a seized engine stays dead
+                and (GetVehicleFuelLevel(veh) or 0) > (Config.minFuel or 1.0) -- DPS 2026-10-29: out of fuel stays out (MS FlightSim cuts it on purpose)
+                and not EXEMPT[GetEntityModel(veh)]                 -- DPS 2026-10-29: MS aircraft are MS-owned
                 and (isGo(veh) or (spool and spool.engineOn)) then -- before the engine stage it is OFF on purpose
                 -- Relight it: this is the throttle-down cut, not a pilot choice.
                 SetVehicleEngineOn(veh, true, true, false)

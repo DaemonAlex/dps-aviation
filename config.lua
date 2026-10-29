@@ -184,7 +184,7 @@ Config.twinHelis = {
 }
 
 -- Models that skip preflight entirely (drones, toys). The old script had rcmavic.
-Config.preflightExempt = { 'rcmavic' }
+Config.preflightExempt = { 'rcmavic', 'ms100', 'ms8000' } -- DPS 2026-10-29: the MS FlightSim aircraft run their own cabin, engine and failure systems; dps-aviation leaves them alone (no pre-flight, no keep-alive)
 
 -- NO GO lines. Fuel below this (ox_fuel units, 0-100) refuses a start.
 Config.minFuel = 1.0
@@ -214,7 +214,7 @@ Config.textStyle = {
 -- Vehicle classes this script touches. 16 is Planes, 15 is Helicopters. Helis
 -- get the engine keep-alive and preflight; taxi assist is planes only (a heli
 -- does not taxi, and while cold its engine is simply off).
-Config.classes = { [15] = true, [16] = true }
+Config.classes = { [15] = false, [16] = true } -- DPS 2026-10-29 (Damon): helicopters out, they fly stock; planes keep the start-up
 
 -- City pilot licences, earned in the City Services app (dps-services, Damon
 -- 2026-10-11): flying any plane needs Private Pilot (or higher), any helicopter
